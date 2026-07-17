@@ -77,7 +77,7 @@ Dùng tương tự `qsort()`, chỉ hỗ trợ mảng `int` ở phiên bản nà
 
 ### Deadlock ở dữ liệu lớn + nhiều thread
 
-**Triệu chứng:** chạy thực tế với `N=100,000,000`, dữ liệu **đã sắp xếp sẵn**, `SORT7_MAX_THREADS=15` — chương trình treo, phải Ctrl+C. Không xảy ra ở N nhỏ hơn hoặc ít thread hơn.
+**Triệu chứng:** chạy thực tế với `N=100,000,000`, dữ liệu **đã sắp xếp sẵn**, `SORT7_MAX_THREADS=15` — chương trình treo, phải hủy tiến trình. Không xảy ra ở N nhỏ hơn hoặc ít thread hơn.
 
 **Nguyên nhân:** thiết kế thread pool ban đầu cho một thread đang chờ đoạn con của chính nó **ngủ im hoàn toàn** (`pthread_cond_wait`) thay vì tranh thủ làm việc khác. Khi đệ quy đủ sâu, toàn bộ worker trong pool có thể cùng lúc rơi vào trạng thái "đứng chờ nhau" — không còn thread nào rảnh để xử lý các đoạn đang nằm chờ trong hàng đợi. Cả hệ thống khóa chặt vĩnh viễn.
 
